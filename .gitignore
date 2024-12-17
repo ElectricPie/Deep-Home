@@ -192,3 +192,6 @@ Plugins/**/Intermediate/*
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/unrealengine,rider,visualstudiocode
+
+## Assets
+Content/PolygonDungeonRealms
