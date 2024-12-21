@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Dwarf.generated.h"
 
+class UEnergyComponent;
 class UHouse;
 
 UCLASS()
@@ -24,9 +25,9 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere)
-	float Energy = 100.f;
-	UPROPERTY(EditAnywhere, meta=(ToolTip="The amount of energy lost per second"))
-	float PassiveEnergyDecay = 1.f;
+	TObjectPtr<UEnergyComponent> EnergyComponent;
+	
 	UPROPERTY(VisibleAnywhere)
 	TWeakObjectPtr<UHouse> House;
+
 };
