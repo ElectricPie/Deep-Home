@@ -6,8 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Dwarf.generated.h"
 
+class UHouseResidentComponent;
 class UEnergyComponent;
-class UHouse;
 
 UCLASS()
 class DEEPHOME_API ADwarf : public ACharacter
@@ -17,17 +17,10 @@ class DEEPHOME_API ADwarf : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ADwarf();
-	virtual void Tick(float DeltaSeconds) override;
-	void AssignHouse(UHouse* NewHouse);
-
-protected:
-	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UEnergyComponent> EnergyComponent;
-	
-	UPROPERTY(VisibleAnywhere)
-	TWeakObjectPtr<UHouse> House;
-
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UHouseResidentComponent> HouseResidentComponent;
 };

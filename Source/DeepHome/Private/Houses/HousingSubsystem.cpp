@@ -2,9 +2,10 @@
 
 
 #include "Houses/HousingSubsystem.h"
-#include "Houses/House.h"
+#include "Houses/HouseComponent.h"
+#include "Houses/HouseResidentComponent.h"
 
-void UHousingSubsystem::UpdateHouseCapacity(UHouse* House, const uint32 AvailableCapacity)
+void UHousingSubsystem::UpdateHouseCapacity(UHouseComponent* House, const uint32 AvailableCapacity)
 {
 	if (House == nullptr)
 	{
@@ -22,12 +23,12 @@ void UHousingSubsystem::UpdateHouseCapacity(UHouse* House, const uint32 Availabl
 		}
 
 		// Assign dwarf to space;
-		if (!DwarfsWaitingForHouse.IsEmpty())
+		if (!ResidentsWaitingForHouse.IsEmpty())
 		{
-			ADwarf* Dwarf = DwarfsWaitingForHouse.Peek()->Get();
-			if (House->AddDwarf(Dwarf))
+			UHouseResidentComponent* Resident = ResidentsWaitingForHouse.Peek()->Get();
+			if (House->AddResident(Resident))
 			{
-				DwarfsWaitingForHouse.Pop();
+				ResidentsWaitingForHouse.Pop();
 			}
 			
 			// Check if there is still space after attempting to add dwarfs
@@ -54,12 +55,12 @@ void UHousingSubsystem::UpdateHouseCapacity(UHouse* House, const uint32 Availabl
 		UnavailableHouses.Remove(House);
 		
 		// Assign dwarf to space
-		if (!DwarfsWaitingForHouse.IsEmpty())
+		if (!ResidentsWaitingForHouse.IsEmpty())
 		{
-			ADwarf* Dwarf = DwarfsWaitingForHouse.Peek()->Get();
-			if (House->AddDwarf(Dwarf))
+			UHouseResidentComponent* Resident = ResidentsWaitingForHouse.Peek()->Get();
+			if (House->AddResident(Resident))
 			{
-				DwarfsWaitingForHouse.Pop();
+				ResidentsWaitingForHouse.Pop();
 			}
 			
 			// Check if there is still space after attempting to add dwarfs
@@ -72,9 +73,9 @@ void UHousingSubsystem::UpdateHouseCapacity(UHouse* House, const uint32 Availabl
 	}
 }
 
-void UHousingSubsystem::RequestHouse(ADwarf* Dwarf)
+void UHousingSubsystem::RequestHouse(UHouseResidentComponent* Resident)
 {
-	if (Dwarf == nullptr)
+	if (Resident == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("UHousingSubsystem::RequestHouse: Dwarf is null"));
 		return;
@@ -85,7 +86,7 @@ void UHousingSubsystem::RequestHouse(ADwarf* Dwarf)
 		for (const auto& House : AvailableHouses)
 		{
 			// Assign House
-			if (House->AddDwarf(Dwarf))
+			if (House->AddResident(Resident))
 			{
 				// Successfully assigned house
 				return;
@@ -93,7 +94,7 @@ void UHousingSubsystem::RequestHouse(ADwarf* Dwarf)
 		}
 	}
 
-	DwarfsWaitingForHouse.Enqueue(Dwarf);
+	ResidentsWaitingForHouse.Enqueue(Resident);
 
-	UE_LOG(LogTemp, Warning, TEXT("No House available"));
+	UE_LOG(LogTemp, Warning, TEXT("No House available")); 
 }

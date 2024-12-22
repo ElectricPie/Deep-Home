@@ -4,21 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Dwarfs/Dwarf.h"
-#include "House.generated.h"
+#include "HouseComponent.generated.h"
 
-class ADwarf;
+class UHouseResidentComponent;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class DEEPHOME_API UHouse : public UActorComponent
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class DEEPHOME_API UHouseComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UHouse();
+	UHouseComponent();
 	uint32 GetCurrentCapacity() const { return CurrentCapacity;}
-	bool AddDwarf(ADwarf* Dwarf);;
+	bool AddResident(UHouseResidentComponent* Resident);;
 
 protected:
 	// Called when the game starts
@@ -32,5 +31,5 @@ private:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	TSet<TWeakObjectPtr<ADwarf>> Dwarfs;
+	TSet<TWeakObjectPtr<UHouseResidentComponent>> Residents;
 };

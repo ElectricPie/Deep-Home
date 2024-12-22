@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Dwarfs/Dwarf.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "HousingSubsystem.generated.h"
 
-class UHouse;
+class UHouseComponent;
+class UHouseResidentComponent;
 
 /**
  * 
@@ -18,12 +18,12 @@ class DEEPHOME_API UHousingSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	void UpdateHouseCapacity(UHouse* House, const uint32 AvailableCapacity);
-	void RequestHouse(ADwarf* Dwarf);
+	void UpdateHouseCapacity(UHouseComponent* House, const uint32 AvailableCapacity);
+	void RequestHouse(UHouseResidentComponent* Resident);
 
 private:
-	TSet<TWeakObjectPtr<UHouse>> AvailableHouses;
-	TSet<TWeakObjectPtr<UHouse>> UnavailableHouses;
+	TSet<TWeakObjectPtr<UHouseComponent>> AvailableHouses;
+	TSet<TWeakObjectPtr<UHouseComponent>> UnavailableHouses;
 
-	TQueue<TWeakObjectPtr<ADwarf>> DwarfsWaitingForHouse;
+	TQueue<TWeakObjectPtr<UHouseResidentComponent>> ResidentsWaitingForHouse;
 };
